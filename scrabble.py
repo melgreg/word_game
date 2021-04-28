@@ -1,4 +1,5 @@
 import random
+import player
 
 class Game:
     def __init__(self, letters=["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", " "],
@@ -9,6 +10,7 @@ class Game:
         for letter, number in zip(letters, num_tiles):
             self.tiles += [letter for _ in range(number)]
         random.shuffle(self.tiles)
+        self.players = []
     
     
 
