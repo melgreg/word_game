@@ -14,3 +14,26 @@ class Player:
 
     def show_tiles(self):
         return ",".join(self.tiles)
+
+
+    def update_score(self, points):
+        self.score += points
+
+        
+    def play_word(self, word):
+        old_tiles = list(self.tiles)
+        word = word.upper()
+        for i in range(len(word)):
+            letter = word[i]
+            if letter in self.tiles:
+                self.tiles.remove(letter)
+            elif " " in self.tiles:
+                self.tiles.remove(" ")
+                word = word[:i] + " " + word[i+1:]
+            else:
+                self.tiles = old_tiles
+                return
+        self.words_played.append(word)
+        return word
+        
+

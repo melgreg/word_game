@@ -30,7 +30,23 @@ class Game:
                 tiles.append(self.tiles.pop())
             player.add_tiles(tiles)
 
+    def score_word(self, word):
+        return sum(self.letter_to_points[letter] for letter in word)
     
+    def ask_for_word(self, player):
+        print(player.show_tiles())
+        word = input("Please enter a word: ")
+        result = player.play_word(word)
+        if result:
+            score = self.score_word(result)
+            print(f"{word.upper()} is worth {score} points.")
+            player.update_score(score)
+            print(f"{player.name}'s current score is: {player.score} points.")
+            self.assign_tiles(player, len(result))
+        else:
+            print(f"{word} is not valid.")
+            
+            
 
 
 ##def score_word(word):
@@ -60,6 +76,8 @@ if __name__ == "__main__":
       name = input("Please enter your name: ")
       game.add_player(name)
       game.assign_tiles(game.players[0])
-      print(game.players[0].show_tiles())
+      for _ in range(3):
+          game.ask_for_word(game.players[0])
+
 
       
