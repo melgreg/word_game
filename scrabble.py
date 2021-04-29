@@ -12,6 +12,24 @@ class Game:
         random.shuffle(self.tiles)
         self.players = []
     
+
+    def add_player(self, name):
+        new_player = player.Player(name)
+        self.players.append(new_player)
+
+
+    def assign_tiles(self, player, num_tiles=7):
+        """Assign num_tiles tiles to player."""
+        if len(self.tiles) <= num_tiles:
+            player.add_tilers(self.tiles)
+            self.tiles = []
+        else:
+            random.shuffle(self.tiles)
+            tiles = []
+            for _ in range(num_tiles):
+                tiles.append(self.tiles.pop())
+            player.add_tiles(tiles)
+
     
 
 
@@ -39,4 +57,9 @@ class Game:
 
 if __name__ == "__main__":
       game = Game()
-      print(game.tiles)
+      name = input("Please enter your name: ")
+      game.add_player(name)
+      game.assign_tiles(game.players[0])
+      print(game.players[0].show_tiles())
+
+      
