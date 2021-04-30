@@ -11,17 +11,29 @@ class Game:
             self.tiles += [letter for _ in range(number)]
         random.shuffle(self.tiles)
         self.players = []
+        for num in range(1, 5):
+            name = input(f"Please enter a name for player #{num} or press enter to start: ")
+            if not name:
+                break
+            self.add_player(name)
+        self.play()
     
-
+    def play(self):
+        '''Continue until there are no more free tiles left.'''
+        while self.tiles:
+            for player in self.players:
+                self.ask_for_word(player)
+        
     def add_player(self, name):
         new_player = player.Player(name)
+        self.assign_tiles(new_player)
         self.players.append(new_player)
 
 
     def assign_tiles(self, player, num_tiles=7):
         """Assign num_tiles tiles to player."""
         if len(self.tiles) <= num_tiles:
-            player.add_tilers(self.tiles)
+            player.add_tiles(self.tiles)
             self.tiles = []
         else:
             random.shuffle(self.tiles)
@@ -34,50 +46,21 @@ class Game:
         return sum(self.letter_to_points[letter] for letter in word)
     
     def ask_for_word(self, player):
-        print(player.show_tiles())
-        word = input("Please enter a word: ")
+        print(f"{player.name}'s tiles: {player.show_tiles()}")
+        word = input(f"{player.name}, please enter a word: ")
         result = player.play_word(word)
         if result:
             score = self.score_word(result)
-            print(f"{word.upper()} is worth {score} points.")
+            print(f"{result} is worth {score} points.")
             player.update_score(score)
-            print(f"{player.name}'s current score is: {player.score} points.")
             self.assign_tiles(player, len(result))
         else:
             print(f"{word} is not valid.")
+        print(f"{player.name}'s current score is: {player.score} points.")
             
-            
-
-
-##def score_word(word):
-##    '''Calculate the score for word.'''
-##    return sum(letter_to_points.get(letter, 0) for letter in word.upper())
-
-
-##player_to_words = {
-##  "player1" : ["BLUE", "TENNIS", "EXIT"],
-##  "wordNerd" : ["EARTH", "EYES", "MACHINE"],
-##  "Lexi Con" : ["ERASER", "BELLY", "HUSKY"],
-##  "Prof Reader" : ["ZAP", "COMA", "PERIOD"],
-##}
-##
-##player_to_points = {}
-##for player, words in player_to_words.items():
-##  player_points = sum(score_word(word) for word in words)
-##  player_to_points[player] = player_points
-##
-##def play_word(player, word):
-##  player_to_words[player].append(word.upper())
-##  score = score_word(word)
-##  player_to_points[player] += score
-
 if __name__ == "__main__":
       game = Game()
-      name = input("Please enter your name: ")
-      game.add_player(name)
-      game.assign_tiles(game.players[0])
-      for _ in range(3):
-          game.ask_for_word(game.players[0])
+
 
 
       
