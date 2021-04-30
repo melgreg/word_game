@@ -1,1 +1,1 @@
-A simple word game inspired by a codecademy project.
+A simple command line word game for up to four players inspired by a codecademy project.
