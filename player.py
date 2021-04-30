@@ -7,6 +7,12 @@ class Player:
         self.score = 0
 
 
+    def __gt__(self, other):
+        return self.score > other.score
+
+    def __str__(self):
+        return f"{self.name}: {self.score} points. Words played:\n{self.words_played}"
+    
     def add_tiles(self, new_tiles):
         """Add new tiles to tiles in hand."""
         self.tiles += new_tiles

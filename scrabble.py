@@ -17,12 +17,23 @@ class Game:
                 break
             self.add_player(name)
         self.play()
-    
+
+
+    def declare_winner(self):
+        print("The winner is:")
+        winner = max(self.players)
+        print(winner)
+
+        
     def play(self):
-        '''Continue until there are no more free tiles left.'''
-        while self.tiles:
+        '''Continue for one round after all free tiles are used.'''
+        turns_empty = 0
+        while turns_empty < 2:
             for player in self.players:
                 self.ask_for_word(player)
+            if not self.tiles:
+                turns_empty += 1
+        self.declare_winner()
         
     def add_player(self, name):
         new_player = player.Player(name)
@@ -43,9 +54,16 @@ class Game:
             player.add_tiles(tiles)
 
     def score_word(self, word):
-        return sum(self.letter_to_points[letter] for letter in word)
+        base_points = sum(self.letter_to_points[letter] for letter in word)
+        if len(word) >= 5:
+            return base_points * 2
+        if len(word) >= 7:
+            return base_points * 3
+        return base_points
     
     def ask_for_word(self, player):
+        if not player.tiles:
+            return
         print(f"{player.name}'s tiles: {player.show_tiles()}")
         word = input(f"{player.name}, please enter a word: ")
         result = player.play_word(word)
