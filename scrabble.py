@@ -30,7 +30,15 @@ class Game:
         turns_empty = 0
         while turns_empty < 2:
             for player in self.players:
-                self.ask_for_word(player)
+                if not player.tiles:
+                    continue
+                print(f"{player.name}'s tiles: {player.show_tiles()}")
+                exchange = input("Would you like to exchange tiles? Y/N: ")
+                if exchange.upper() == "N":
+                    self.ask_for_word(player)
+                else:
+                    self.ask_for_exchange(player)
+                    
             if not self.tiles:
                 turns_empty += 1
         self.declare_winner()
@@ -62,9 +70,6 @@ class Game:
         return base_points
     
     def ask_for_word(self, player):
-        if not player.tiles:
-            return
-        print(f"{player.name}'s tiles: {player.show_tiles()}")
         word = input(f"{player.name}, please enter a word: ")
         result = player.play_word(word)
         if result:
@@ -75,6 +80,17 @@ class Game:
         else:
             print(f"{word} is not valid.")
         print(f"{player.name}'s current score is: {player.score} points.")
+
+
+    def ask_for_exchange(self, player):
+        tiles = input("Enter tiles to exchange: ").upper()
+        result = player.exchange_tiles(tiles)
+        if result:
+            self.tiles += result
+            self.assign_tiles(player, len(result))
+        else:
+            print("Tiles could not be exchanged.")
+        
             
 if __name__ == "__main__":
       game = Game()

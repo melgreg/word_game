@@ -41,5 +41,18 @@ class Player:
                 return
         self.words_played.append(word)
         return word
+
+
+    def exchange_tiles(self, tiles):
+        old_tiles = list(self.tiles)
+        tiles = tiles.split(",")
+        for tile in tiles:
+            try:
+                self.tiles.remove(tile)
+            except ValueError:
+                self.tiles = old_tiles
+                return
+        return tiles
+                
         
 
